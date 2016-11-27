@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <title>Experiment Factory Battery</title>
+    <script src="static/lib/jquery-min.js" type="text/javascript"> </script> 
+   
+    
+<script src='static/js/math.min.js'></script>
+<script src='static/js/jspsych/jspsych.js'></script>
+<script src='static/js/jspsych/plugins/jspsych-text.js'></script>
+<script src='static/js/jspsych/poldrack_plugins/jspsych-poldrack-text.js'></script>
+<script src='static/js/jspsych/poldrack_plugins/jspsych-poldrack-instructions.js'></script>
+<script src='static/js/jspsych/poldrack_plugins/jspsych-attention-check.js'></script>
+<script src='static/js/jspsych/poldrack_plugins/jspsych-poldrack-single-stim.js'></script>
+<script src='static/js/jspsych/poldrack_plugins/jspsych-poldrack-categorize.js'></script>
+<script src='static/js/jspsych/plugins/jspsych-survey-text.js'></script>
+<script src='static/js/utils/poldrack_utils.js'></script>
+<script src='static/experiments/stroop/experiment.js'></script>
+<link rel='stylesheet' type='text/css' href='static/css/jspsych.css'>
+<link rel='stylesheet' type='text/css' href='static/css/default_style.css'>
+<link rel='stylesheet' type='text/css' href='static/experiments/stroop/style.css'>    
+    <script src="static/js/load_experiments.js" type="text/javascript"></script>
+    <link rel='stylesheet' href='static/css/default_style.css' type="text/css">  
+  
+  </head>
+  <body>
+	  
+	  <script> 
+	   
+		var task_list = '<ul list-text>'
+		for (i=0; i<experiment_names.length; i++) {
+			task_list += '<li>' + experiment_names[i] + '</li>'
+		}
+      
+		
+		var task_list_block = {
+		  type: 'text',
+		  text: '<div class = centerbox><p class = block-text>In this assessment you will be completing the following tasks: </p>' + task_list + '</ul><p class = block-text>Press <strong>enter</strong> to continue.</p></div>',
+		  cont_key: [13],
+		};
+
+		var end_block = {
+		  type: 'text',
+		  text: '<div class = centerbox><p class = block-text>Please wait for the experimenter to complete your assessment.</p></div>',
+		  cont_key: [13],
+		};
+
+				
+		var experiments = []
+		experiments.push(task_list_block)
+
+		// concatenate on the experimental blocks defined for each of the constituent experiments
+		cat_experiments(experiments)
+                experiments.push(end_block);
+
+            $( document ).ready(function() {
+
+                // POST experiment result (json format) to Concerto (PHP/MySQL)
+                function save_data(subject_id, experiment, data){
+                    var post_url = '/itest/save_data.php' // TODO : change this to point to your php file. If not a local URL, cross-origin resource sharing should be enabled. See http://enable-cors.org/server_apache.html
+                    
+                    $.ajax({
+                        type:'post',
+                        cache: false,
+                        url: post_url,
+                        data: {
+                            json: data,
+                            opt_data: { subject: subject_id, experiment: experiment }
+                        },
+                        success: function(output) { /* console.log(output); */ } // write the result to javascript console
+                    });
+                }
+
+                // get URL parameters
+                function gup(name, url) {
+                  if (!url) url = location.href;
+                  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+                  var regexS = "[\\?&]"+name+"=([^&#]*)";
+                  var regex = new RegExp( regexS );
+                  var results = regex.exec( url );
+                  return results == null ? null : results[1];
+                }
+
+                subject_id = gup('uid');
+                if (subject_id == null) subject_id = "0";
+
+                // add the subject id to the data
+                jsPsych.data.addProperties({subject: subject_id});
+
+                // start the experiment -->
+                jsPsych.init({
+	
+ 	            timeline: experiments,
+                    display_element: "getDisplayElement",
+                    fullscreen: true,
+
+                    on_finish: function(data) {
+                        //jsPsych.data.localSave(subject_id + '.json', 'json');
+                        save_data(subject_id, experiment_names[0], jsPsych.data.dataAsJSON());
+                        expfactory_finished = true;
+                    }
+                });
+
+          });		
+	  </script>
+  </body>
+</html>
