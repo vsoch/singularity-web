@@ -43,9 +43,8 @@ The [nginx-basic](nginx-basic) example will walk you through creating a containe
 The [nginx-expfactory](nginx-expfactory) example takes a [software that I published in graduate school](http://journal.frontiersin.org/article/10.3389/fpsyg.2016.00610/full) and shows an example of how to wrap a bunch of dependencies in a container, and then allow the user to use it like a function with input arguments.
 
 ### nginx-jupyter
-I use ipython notebook / jupyter notebook sometimes, and I thought it would be nice to have an image that could easily bring up a server, either for files in the container or a folder mapped from the outside.
+I use ipython notebook / jupyter notebook sometimes, and I thought it would be nice to have an image that could easily bring up a server, either for files in the container or a folder mapped from the outside. Behold, [nginx-jupyter](nginx-jupyter)
  
-** under development **
 
 ## How do I share them?
 You have a few options! 
