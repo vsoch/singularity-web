@@ -23,7 +23,7 @@ Then to run our container, since we need to write files to `/opt/notebooks` insi
 
 When we open the browser, we see our server! Cool!
 
-[jupyter.png](jupyter.png)
+![jupyter.png](jupyter.png)
 
 Since the notebooks are being written to the image, this means that all of our work is preserved in it. I can finish working, close up shop, and hand my image to someone else, and it's preserved. Here, I'll show you. Let's shell into the container after we've shut down the server (note that I didn't need to use sudo for this).
 
@@ -41,4 +41,4 @@ You can also map to a folder on your local machine, if you don't want to save th
 
 and here I am sitting in my local directory, but the entire software and depdencies are provided by my container. STILL really cool.
 
-[local.png](local.png)
+![local.png](local.png)
