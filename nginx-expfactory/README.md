@@ -76,7 +76,7 @@ In this case we are really running the command:
 
 and if we open our browser to port 9684 (randomly selected) we see our stroop task! Awesome.
 
-![experiments.png](experiments.png)
+![experiment.png](experiment.png)
 
 
 Notice how you can use the `%runscript` section to give the user more or less control over your executable. For example, if my runscript looked like this:
