@@ -11,13 +11,16 @@ If you haven't installed singularity, do that with [these instructions](http://s
       cd singularity-web
 
 
-Let's now create a jupyter notebook!
+Let's now create a jupyter notebook! Since we need a writable image, we issue the `--writable` to build:
 
       cd nginx-jupyter
-      sudo singularity create --size 4000 jupyter.img
-      sudo singularity bootstrap jupyter.img Singularity
+      sudo singularity build --writable jupyter.simg Singularity
 
-Then to run our container, since we need to write files to `/opt/notebooks` inside the container, we must use sudo and add the `--writable` command:
+and you could also build into a folder, if you want to easily browse files (this might be the best option for this use case)
+
+      sudo singularity build --sandbox jupyter.simg Singularity
+
+Note that in the second option, the result is a folder and not a single image. Then to run our container, since we need to write files to `/opt/notebooks` inside the container, we must use sudo and add the `--writable` command:
 
       sudo singularity run --writable jupyter.img
 
